@@ -18,6 +18,7 @@ async function hof(youFunc) {
 const listOfContacts = (list) => {
   console.log(
     "listOfContacts",
+    //list
     list.map((contact) => contact.name)
   );
 };
@@ -33,9 +34,10 @@ const getContactById = (contactId) => (list) => {
 
 //=============================
 
-const removeContact = (contactId) => (list) => {
+const removeContact = (contactId) => async (list) => {
   const contacts = list.filter((contact) => contact.id !== contactId);
   console.log(`removeContact ${contactId}`, contacts);
+  await fsPromises.writeFile(contactsPath, JSON.stringify(contacts));
 };
 
 // hof(removeContact(12));
