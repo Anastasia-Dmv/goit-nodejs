@@ -14,31 +14,58 @@ async function hof(youFunc) {
     console.log("err", err);
   }
 }
-
-// const listOfContactsInner = (list) => {
-//   console.log(
-//     "list",
-//     list.map((contact) => contact.name)
-//   );
-// };
-// hof(listOfContactsInner);
+//=====================
+const listOfContacts = (list) => {
+  console.log(
+    "listOfContacts",
+    list.map((contact) => contact.name)
+  );
+};
+// hof(listOfContacts);
 
 //==================
-// const removeContact = (contactId) => (list) => {
-//   const contacts = list.filter((contact) => contact.id !== contactId);
-//   console.log("contact", contacts);
-// };
+const getContactById = (contactId) => (list) => {
+  const contact = list.find((item) => item.id === contactId);
+  console.log("getContactById", contact);
+};
+
+// hof(getContactById(6));
+
+//=============================
+
+const removeContact = (contactId) => (list) => {
+  const contacts = list.filter((contact) => contact.id !== contactId);
+  console.log(`removeContact ${contactId}`, contacts);
+};
 
 // hof(removeContact(12));
 //==================
-const getContactById = (contactId) => (list) =>  {
+const addContact = (name, email, phone) => async (list) => {
+  const addedContacts = [
+    ...list,
+    {
+      id: list.length + 1,
+      name: name,
+      email: email,
+      phone: phone,
+    },
+  ];
+  console.log("addContact", addedContacts);
+  await fsPromises.writeFile(contactsPath, JSON.stringify(addedContacts));
+};
 
-    const contact = list.find(item => item.id === contactId);
-    console.log("contact", contact);
+// hof(addContact("a", "b", "c"));
 
-hoc(getContactById(6));
+//=================================
+module.exports = {
+  hof,
+  listOfContacts,
+  getContactById,
+  removeContact,
+  addContact,
+};
+//==========================
 
-//=============================
 // const listContactsFunc = async function listContacts() {
 //   try {
 //     const resultData = await fsPromises.readFile(contactsPath, "utf-8");
@@ -53,6 +80,7 @@ hoc(getContactById(6));
 // };
 
 // listContacts();
+//=======================
 // const getContactByIdFunc = async function getContactById(contactId) {
 //   try {
 //     const result = await fsPromises.readFile(contactsPath, "utf-8");
@@ -64,7 +92,8 @@ hoc(getContactById(6));
 //     console.log("err", err);
 //   }
 // };
-// // getContactById(6);
+// getContactById(6);
+//=========================
 // const removeContactFunc = async function removeContact(contactId) {
 //   try {
 //     const result = await fsPromises.readFile(contactsPath, "utf-8");
@@ -76,7 +105,9 @@ hoc(getContactById(6));
 //     console.log("err", err);
 //   }
 // };
-// // removeContact(5);
+// removeContact(5);
+//===============================
+
 // const addContactFunc = async function addContact(name, email, phone) {
 //   try {
 //     const result = await fsPromises.readFile(contactsPath, "utf-8");
@@ -98,9 +129,5 @@ hoc(getContactById(6));
 //   }
 // };
 // addContact("a", "b", "c");
-//module.exports = {
-// listContactsFunc,
-// getContactByIdFunc,
-// removeContactFunc,
-// addContactFunc,
-//}
+
+//============================
