@@ -4,40 +4,41 @@ const { promises: fsPromises } = fs;
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 console.log("contactsPath", contactsPath);
-
-const hof = async function (youFunc) {
+//=============================
+async function hof(youFunc) {
   try {
     const resultData = await fsPromises.readFile(contactsPath, "utf-8");
-    youFunc(resultData);
+    const list = JSON.parse(resultData);
+    return youFunc(list);
   } catch (err) {
     console.log("err", err);
   }
-};
+}
 
-const listOfContactsInner = (resultData) => {
-  const list = JSON.parse(resultData);
-  console.log(
-    "list",
-    list.map((contact) => contact.name)
-  );
-};
-hof(listOfContactsInner());
+// const listOfContactsInner = (list) => {
+//   console.log(
+//     "list",
+//     list.map((contact) => contact.name)
+//   );
+// };
+// hof(listOfContactsInner);
 
-// const listContactsFunc = async function listContacts() {
-//     try {
+//==================
+// const removeContact = (contactId) => (list) => {
+//   const contacts = list.filter((contact) => contact.id !== contactId);
+//   console.log("contact", contacts);
+// };
 
-//       const resultData = await fsPromises.readFile(contactsPath, "utf-8");
-//       const list = JSON.parse(resultData);
-//       console.log(
-//         "list",
-//         list.map((contact) => contact.name)
-//       );
+// hof(removeContact(12));
+//==================
+const getContactById = (contactId) => (list) =>  {
 
-//     } catch (err) {
-//       console.log("err", err);
-//     }
-//   };
+    const contact = list.find(item => item.id === contactId);
+    console.log("contact", contact);
 
+hoc(getContactById(6));
+
+//=============================
 // const listContactsFunc = async function listContacts() {
 //   try {
 //     const resultData = await fsPromises.readFile(contactsPath, "utf-8");
@@ -97,9 +98,9 @@ hof(listOfContactsInner());
 //   }
 // };
 // addContact("a", "b", "c");
-module.exports = {
-  listContactsFunc,
-  // getContactByIdFunc,
-  // removeContactFunc,
-  // addContactFunc,
-};
+//module.exports = {
+// listContactsFunc,
+// getContactByIdFunc,
+// removeContactFunc,
+// addContactFunc,
+//}
