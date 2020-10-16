@@ -1,2 +1,2 @@
-const { crudServer } = require("./server.js");
+const { crudServer } = require("./server");
 crudServer.start();
