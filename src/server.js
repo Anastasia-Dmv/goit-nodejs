@@ -36,5 +36,8 @@ class CrudServer {
       };
   }
 }
+// exports.CrudServer = CrudServer;
+// exports.crudServer = new CrudServer();
+
 exports.CrudServer = CrudServer;
 exports.crudServer = new CrudServer();
