@@ -2,6 +2,7 @@ const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 const express = require("express");
+const { getAllContacts } = require("./users/users.controller");
 
 class CrudServer {
   constructor() {
@@ -22,7 +23,9 @@ class CrudServer {
   initMiddlewares() {
     this.app.use(express.json());
   }
-  initRouters() {}
+  initRouters() {
+    this.app.use("/api/contacts", getAllContacts)
+  }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
       const statusCode = err.status || 500;
