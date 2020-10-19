@@ -1,9 +1,13 @@
 const {
-  hof,
-  listOfContacts,
+  getListOfContacts,
+  // getSomeContactById,
+  // removeSomeContact,
+  // addSomeContact,
+  errorCatchingFunction, 
   getContactById,
-  removeContact,
-  addContact,
+  removeContact, 
+  addContact
+  
 } = require("./contacts");
 
 const argv = require("yargs").argv;
@@ -11,19 +15,22 @@ const argv = require("yargs").argv;
 function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      hof(listOfContacts);
+      getListOfContacts;
       break;
 
     case "get":
-      hof(getContactById(id));
+      errorCatchingFunction(getContactById(id))
+      // getSomeContactById(id);
       break;
 
     case "add":
-      hof(addContact(name, email, phone));
+      errorCatchingFunction(addContact(name, email, phone))
+      //removeSomeContact(id);
       break;
 
     case "remove":
-      hof(removeContact(id));
+      errorCatchingFunction(removeContact(id))
+      // addSomeContact(name, email, phone);
       break;
 
     default:
