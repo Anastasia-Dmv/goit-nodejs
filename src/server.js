@@ -1,8 +1,13 @@
+const express = require("express");
 const path = require("path");
+const { usersRouter } = require("./users/users.router");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
-const express = require("express");
-const { getAllContacts } = require("./users/users.controller");
+//const contactsRouter = require('./users/users.router');
+// const morgan = require("morgan");
+// // const { getAllContacts } = require("./users/users.controller");
+// const  {router}  = require("./users/users.router");
+ const PORT = process.env.PORT || 3000;
 
 class CrudServer {
   constructor() {
@@ -19,12 +24,14 @@ class CrudServer {
   }
   initServer() {
     this.app = express();
+    // this.app.use(cors());
+    // this.app.use(morgan("combined"));
   }
   initMiddlewares() {
     this.app.use(express.json());
   }
   initRouters() {
-    this.app.use("/api/contacts", getAllContacts)
+    this.app.use("/api/contacts", usersRouter)
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
@@ -33,14 +40,14 @@ class CrudServer {
     });
   }
   startListening() {
-    this.app.listen(process.env.PORT,
+    this.app.listen(PORT,
       () => {
-        console.log("server started on port ", process.env.PORT);
+        console.log("server started on port ", PORT);
       });
   }
 }
-// exports.CrudServer = CrudServer;
-// exports.crudServer = new CrudServer();
-
 exports.CrudServer = CrudServer;
 exports.crudServer = new CrudServer();
+
+// exports.CrudServer = CrudServer;
+// exports.crudServer = new CrudServer();
