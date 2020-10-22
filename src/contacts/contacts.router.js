@@ -12,7 +12,7 @@ const {
   findContactById,
   updateContact,
   deleteContactById,
-} = require("./users.controller");
+} = require("./contacts.controller");
 
 const router = Router();
 

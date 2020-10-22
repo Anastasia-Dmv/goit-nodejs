@@ -5,7 +5,7 @@ const {
   removeContact,
   addContact,
   findAndUpdateContact,
-} = require("../users/users.model");
+} = require("./contacts.model");
 
 exports.createUser = async (req, res, next) => {
   const newUser = await errorHandlingWrapper(addContact(req.body));

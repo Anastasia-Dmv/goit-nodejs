@@ -4,7 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
-const { usersRouter } = require("./users/users.router");
+const { usersRouter } = require("./contacts/contacts.router");
 
 const PORT = process.env.PORT || 3000;
 
