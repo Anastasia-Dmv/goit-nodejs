@@ -3,12 +3,13 @@
  const Joi = require("joi");
 
   const {validate} =require("../helpers/validate");
-const  {createUser, getAllContacts}  = require('./users.controller');
+const  {createUser, getAllContacts, findContactById}  = require('./users.controller');
 //const {getAllContacts } = require('./users.controller');
 
 
 
 const {Router}= require('express');
+
 
  const  router = Router();
 
@@ -17,10 +18,12 @@ const createUserSchema = Joi.object({
     email: Joi.string().email().required(),
     phone: Joi.string().required(),
 })
- router.get("/", getAllContacts );
 
-router.post('/',validate(createUserSchema), createUser );
+router.post("/",validate(createUserSchema), createUser );
 
+router.get("/", getAllContacts );
+
+router.get("/:contactId", findContactById );
 
 
 // module.exports = router;

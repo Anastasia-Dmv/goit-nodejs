@@ -17,21 +17,24 @@ async function hof(youFunc) {
 }
 //=====================
 const listOfContacts = (list) => {
-  console.log(
-    "listOfContacts",
-    //list
-    list.map((contact) => contact.name)
-  );
+//   console.log(
+//     "listOfContacts",
+//     //list
+//     list.map((contact) => contact.name)
+//   );
+  const allContacts = list.map((contact) => contact.name)
+   return allContacts;
 };
 // hof(listOfContacts);
 
 //==================
 const getContactById = (contactId) => (list) => {
   const contact = list.find((item) => item.id === contactId);
-  console.log("getContactById", contact);
+//   console.log("getContactById", contact);
+  return contact;
 };
 
-// hof(getContactById(6));
+
 
 //=============================
 
