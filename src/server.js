@@ -1,12 +1,12 @@
 const express = require("express");
 const path = require("path");
-const { usersRouter } = require("./users/users.router");
+const cors = require("cors")
+const morgan = require("morgan");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
-//const contactsRouter = require('./users/users.router');
-// const morgan = require("morgan");
-// // const { getAllContacts } = require("./users/users.controller");
-// const  {router}  = require("./users/users.router");
+
+const { usersRouter } = require("./users/users.router");
+
  const PORT = process.env.PORT || 3000;
 
 class CrudServer {
@@ -16,7 +16,7 @@ class CrudServer {
 
   start() {
     this.initServer();
-    //this.initDataBase();
+   
     this.initMiddlewares();
     this.initRouters();
     this.initErrorHandling();
@@ -24,8 +24,8 @@ class CrudServer {
   }
   initServer() {
     this.app = express();
-    // this.app.use(cors());
-    // this.app.use(morgan("combined"));
+    this.app.use(cors());
+    this.app.use(morgan("combined"));
   }
   initMiddlewares() {
     this.app.use(express.json());
@@ -49,5 +49,3 @@ class CrudServer {
 exports.CrudServer = CrudServer;
 exports.crudServer = new CrudServer();
 
-// exports.CrudServer = CrudServer;
-// exports.crudServer = new CrudServer();

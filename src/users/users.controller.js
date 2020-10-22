@@ -1,45 +1,55 @@
-//const { userModel, getContactById } = require("./users.model");
 const {
-  hof,
+  errorHandlingWrapper,
   listOfContacts,
   getContactById,
-//   removeContact,
+   removeContact,
    addContact,
+   findAndUpdateContact
 } = require("../users/users.model");
 
 
 
 
-exports.createUser =  (req, res, next)=>{
-  const newUser = hof(addContact(req.body))
-res.status(201).send(newUser);
+exports.createUser = async (req, res, next)=>{
+  const newUser =  await errorHandlingWrapper(addContact(req.body))
+res.status(201).json(newUser);
 }
-// async function getAllContacts(req, res, next) {
 
-//     const users = await hof(listOfContacts);
-//     res.status(200).send(users);
-
-//      res.status(200).send();
-//      const newUser = saveUser(req.body);
-//      res.status(201).send(newUser);
-//  }
 
  exports.getAllContacts = async (req, res, next)=>{
 
-      const users =  await hof(listOfContacts);
-    //  console.log('users', users);
-    //  res.status(200).send(users);
+      const users =  await errorHandlingWrapper(listOfContacts);
+    
        res.status(200).send(users);
  }
-exports.findContactById = async (req, res, next)=>{
+exports.findContactById = async (req, res, next) => { 
   const { contactId } = req.params;
-  const  contact =  await  hof(getContactById(contactId));
+  const  contact =  await  errorHandlingWrapper(getContactById(contactId));
   console.log('contact', contact)
-  if(!contact|| contact === undefined){
+  if(!contact){
     return res.status(404).send('Contact not found ')
   }
-return res.status(200).send(contact);
+ res.status(200).send(contact);
 }
-// module.exports ={
-//   getAllContacts
-// }
+
+
+
+ exports.updateContact = async (req, res, next)=>{
+  const { contactId } = req.params;
+  const  updatedContact =  await  errorHandlingWrapper(findAndUpdateContact(contactId, req.body));
+  if(!updatedContact){
+    return res.status(404).send('Not found')
+  }
+   return res.status(200).send(updatedContact)
+ }
+
+
+ exports.deleteContactById = async (req, res, next)=>{
+ const { contactId } = req.params;
+ const  contact =  await  errorHandlingWrapper(getContactById(contactId));
+ if(!contact){
+  return res.status(404).send('Not found')
+}
+  await  errorHandlingWrapper(removeContact(contactId))
+ return   res.status(200).send("Contact deleted");
+ }

@@ -1,30 +1,22 @@
-// const express = require('express');
-// const router = express.Router();
- const Joi = require("joi");
-
-  const {validate} =require("../helpers/validate");
-const  {createUser, getAllContacts, findContactById}  = require('./users.controller');
-//const {getAllContacts } = require('./users.controller');
-
-
 
 const {Router}= require('express');
+const Joi = require("joi");
 
+const {validate,  updateContactSchema, createContactSchema, } = require("../helpers/validate");
+const  {createUser, getAllContacts, findContactById, updateContact, deleteContactById}  = require('./users.controller');
 
- const  router = Router();
+const  router = Router();
 
-const createUserSchema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().email().required(),
-    phone: Joi.string().required(),
-})
-
-router.post("/",validate(createUserSchema), createUser );
+ router.route("/api/contacts")
 
 router.get("/", getAllContacts );
 
+router.post("/",validate(createContactSchema), createUser );
+
 router.get("/:contactId", findContactById );
 
+router.put("/:contactId",  validate(updateContactSchema), updateContact)
 
-// module.exports = router;
+router.delete("/:contactId",  deleteContactById)
+
 exports.usersRouter = router;
