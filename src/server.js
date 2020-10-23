@@ -47,15 +47,12 @@ class CrudServer {
   async initDataBase() {
     try {
       mongoose.set("useCreateIndex", true);
-      await mongoose.connect(
-        "mongodb+srv://Anastasia:Sofiya3110@cluster0.p5htp.mongodb.net/db-contacts?retryWrites=true&w=majority",
-        {
-          useNewUrlParser: true,
-          // useInifiedTopology: true,
-          useFindAndModify: true,
-        }
-      );
-      console.log("Successfully connected to DB !");
+      await mongoose.connect(process.env.MONGODB_URL, {
+        useNewUrlParser: true,
+        // useInifiedTopology: true,
+        useFindAndModify: true,
+      });
+      console.log("Successfully connected to MONGODB !");
     } catch (err) {
       console.log(err.message);
       process.exit(1);
