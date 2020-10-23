@@ -5,6 +5,7 @@ const {
   validate,
   updateContactSchema,
   createContactSchema,
+  validateIdSchema,
 } = require("../helpers/validate");
 const {
   createUser,
@@ -22,10 +23,23 @@ router.get("/", getAllContacts);
 
 router.post("/", validate(createContactSchema), createUser);
 
-router.get("/:contactId", findContactById);
+router.get(
+  "/:contactId",
+  // validate(validateIdSchema, "params"),
+  findContactById
+);
 
-router.put("/:contactId", validate(updateContactSchema), updateContact);
+router.put(
+  "/:contactId",
+  //validate(validateIdSchema, "params"),
+  validate(updateContactSchema),
+  updateContact
+);
 
-router.delete("/:contactId", deleteContactById);
+router.delete(
+  "/:contactId",
+  //validate(validateIdSchema, "params"),
+  deleteContactById
+);
 
 exports.usersRouter = router;
