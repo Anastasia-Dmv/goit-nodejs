@@ -1,4 +1,13 @@
+const MongoClient = require("mongodb").MongoClient;
+const url =
+  "mongodb://localhost:27017Anastasia:MvkBEDUQW8EJJey@cluster0.p5htp.mongodb.net/db-contacts?retryWrites=true&w=majority";
+async function main() {
+  await MongoClient.connect("");
+}
+main();
+
 const express = require("express");
+
 const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
