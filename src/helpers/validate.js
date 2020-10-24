@@ -17,7 +17,7 @@ const updateContactSchema = Joi.object({
   phone: Joi.string(),
   subscription: Joi.string(),
   password: Joi.string(),
-  token: Joi.string(),
+  // token: Joi.string(),
 });
 const createContactSchema = Joi.object({
   name: Joi.string().required(),
@@ -25,7 +25,7 @@ const createContactSchema = Joi.object({
   phone: Joi.string().required(),
   subscription: Joi.string().required(),
   password: Joi.string().required(),
-  token: Joi.string().required(),
+  // token: Joi.string().required(),
 });
 
 module.exports = {
