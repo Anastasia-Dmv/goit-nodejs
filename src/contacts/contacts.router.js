@@ -1,12 +1,10 @@
 const { Router } = require("express");
-const Joi = require("joi");
 const { errorHandlingWrapper } = require("../helpers/utils");
 
 const {
   validate,
   updateContactSchema,
   createContactSchema,
-  validateIdSchema,
 } = require("../helpers/validate");
 const {
   createContact,
@@ -24,27 +22,18 @@ router.get("/", errorHandlingWrapper(getAllContacts));
 
 router.post(
   "/",
-  validate(createContactSchema, "params"),
+  validate(createContactSchema),
   errorHandlingWrapper(createContact)
 );
 
-router.get(
-  "/:contactId",
-  // validate(validateIdSchema, "params"),
-  errorHandlingWrapper(findContactById)
-);
+router.get("/:contactId", errorHandlingWrapper(findContactById));
 
 router.put(
   "/:contactId",
-  //validate(validateIdSchema, "params"),
   validate(updateContactSchema),
   errorHandlingWrapper(updateContact)
 );
 
-router.delete(
-  "/:contactId",
-  //validate(validateIdSchema, "params"),
-  errorHandlingWrapper(deleteContactById)
-);
+router.delete("/:contactId", errorHandlingWrapper(deleteContactById));
 
 exports.usersRouter = router;

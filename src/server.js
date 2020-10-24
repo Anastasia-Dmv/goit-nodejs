@@ -51,10 +51,8 @@ class CrudServer {
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
-      console.log("errSERVICE----------->", err, err.name, err.code);
-      //console.log("err----------->", err);
       const statusCode = err.status || 500;
-      return res.status(statusCode).send(err.message);
+      return res.status(statusCode).json(err.message);
     });
   }
   startListening() {
