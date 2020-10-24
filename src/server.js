@@ -39,7 +39,7 @@ class CrudServer {
       });
       console.log("Successfully connected to mongo database !");
     } catch (err) {
-      console.log("Error connecting mongo database", err.message);
+      console.log("Error connecting mongo database", err);
       process.exit(1);
     }
   }
