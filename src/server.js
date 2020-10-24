@@ -1,18 +1,3 @@
-// const MongoClient = require("mongodb").MongoClient;
-// const url =
-//   "mongodb://localhost:27017Anastasia:MvkBEDUQW8EJJey@cluster0.p5htp.mongodb.net/db-contacts?retryWrites=true&w=majority";
-// async function main() {
-//   await MongoClient.connect(url);
-//   console.log("Database connection successful");
-// }
-// main();
-
-// Используй исходный код домашней работы #2 и замени хранение контактов из json-файла на созданную тобой базу данных.
-
-// Напиши код для создания подключения к MongoDB при помощи Mongoose.
-// При успешном подключении выведи в консоль сообщение "Database connection successful".
-// Обязательно обработай ошибку подключения. Выведи в консоль сообщение ошибки и заверши процесс используя process.exit(1).
-// В функциях обработки запросов замени код CRUD-операций над контактами из файла, на Mongoose-методы для работы с коллекцией контактов в базе данных.
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -49,12 +34,12 @@ class CrudServer {
       mongoose.set("useCreateIndex", true);
       await mongoose.connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
-        // useInifiedTopology: true,
+        useInifiedTopology: true,
         useFindAndModify: true,
       });
-      console.log("Successfully connected to MONGODB !");
+      console.log("Successfully connected to mongo database !");
     } catch (err) {
-      console.log(err.message);
+      console.log("Error connecting mongo database", err.message);
       process.exit(1);
     }
   }
@@ -66,6 +51,8 @@ class CrudServer {
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
+      console.log("errSERVICE----------->", err, err.name, err.code);
+      //console.log("err----------->", err);
       const statusCode = err.status || 500;
       return res.status(statusCode).send(err.message);
     });
