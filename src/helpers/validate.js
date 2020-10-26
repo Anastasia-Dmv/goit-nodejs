@@ -25,9 +25,24 @@ const createContactSchema = Joi.object({
   subscription: Joi.string().required(),
   password: Joi.string().required(),
 });
-
+const signUpSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  // subscription: {
+  //   type: Joi.string().required(),
+  //   enum: ["free", "pro", "premium"],
+  //   default: "free",
+  // },
+  //token: Joi.string().required(),
+});
+const singInSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});
 module.exports = {
   updateContactSchema,
   createContactSchema,
   validate,
+  signUpSchema,
+  singInSchema,
 };

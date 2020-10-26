@@ -7,6 +7,7 @@ const morgan = require("morgan");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 const { usersRouter } = require("./contacts/contacts.router");
+const { authRouter } = require("./auth/auth.router");
 
 const PORT = process.env.PORT || 3000;
 
@@ -48,6 +49,7 @@ class CrudServer {
   }
   initRouters() {
     this.app.use("/api/contacts", usersRouter);
+    this.app.use("/auth", authRouter);
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
