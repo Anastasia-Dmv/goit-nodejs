@@ -1,4 +1,4 @@
-const { UserModel } = require("../users/user.model");
+const { UserModel } = require("../users/users.model");
 const bcryptjs = require("bcryptjs");
 const { Conflict } = require("../helpers/errors/Conflict.error");
 const { NotFound } = require("../helpers/errors/NotFound.error");
@@ -36,21 +36,21 @@ exports.signIn = async (req, res, next) => {
       //return res.status(409).json("Сontact with the same email already exists");
       throw new NotFound("User with such email not found");
     }
-    const isCorrectPassword = await bcryptjs.compare(
-      password,
-      user.passwordHash
-    );
+    const isCorrectPassword = await bcryptjs.compare(password, user.password);
     if (!isCorrectPassword) {
       throw new Forbidden("Provided password is wrong");
     }
-    const token = jwt.sign({ userId: user._id }, precess.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
+    res.cookie("token", token, { httpOnly: true });
     res.status(200).send({
       //   id: user._id,
       email,
+      token,
     });
   } catch (err) {
+    console.log("err", err);
     next(err);
   }
 };

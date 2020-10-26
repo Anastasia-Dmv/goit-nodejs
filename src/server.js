@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
-
+//const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
-const { usersRouter } = require("./contacts/contacts.router");
+const { contactsRouter } = require("./contacts/contacts.router");
 const { authRouter } = require("./auth/auth.router");
+const { usersRouter } = require("./users/users.router");
 
 const PORT = process.env.PORT || 3000;
 
@@ -44,12 +46,14 @@ class CrudServer {
       process.exit(1);
     }
   }
-  initMiddlewares() {
+  async initMiddlewares() {
     this.app.use(express.json());
+    this.app.use(cookieParser());
   }
   initRouters() {
-    this.app.use("/api/contacts", usersRouter);
     this.app.use("/auth", authRouter);
+    this.app.use("/users", usersRouter);
+    this.app.use("/api/contacts", contactsRouter);
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {

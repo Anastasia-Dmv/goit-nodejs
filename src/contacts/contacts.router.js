@@ -1,4 +1,5 @@
 const { Router } = require("express");
+//const { authorize } = require("../helpers/authorize");
 const { errorHandlingWrapper } = require("../helpers/utils");
 
 const {
@@ -30,10 +31,15 @@ router.get("/:contactId", errorHandlingWrapper(findContactById));
 
 router.put(
   "/:contactId",
+
   validate(updateContactSchema),
   errorHandlingWrapper(updateContact)
 );
 
-router.delete("/:contactId", errorHandlingWrapper(deleteContactById));
+router.delete(
+  "/:contactId",
 
-exports.usersRouter = router;
+  errorHandlingWrapper(deleteContactById)
+);
+
+exports.contactsRouter = router;
