@@ -8,7 +8,7 @@ const { Unauthorized } = require("./errors/Unauthorized.error");
 exports.authorize = async (req, res, next) => {
   try {
     console.log("req.headers", req.headers);
-    const token = req.cookies;
+    const { token } = req.cookies;
     //const newToken = req.headers.authorization.split(" ")[1];
     console.log("token==========>", token);
     console.log("process.env.JWT_SECRET", process.env.JWT_SECRET);
