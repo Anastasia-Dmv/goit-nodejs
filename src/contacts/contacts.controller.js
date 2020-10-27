@@ -15,7 +15,10 @@ createContact = async (req, res, next) => {
 };
 
 getAllContacts = async (req, res, next) => {
-  const users = await ContactsModel.find();
+  const limit = req.query.limit || 10;
+  const page = req.query.page || 1;
+  const subscription = req.query.subscription || "free";
+  const users = await ContactsModel.paginate({ subscription }, { limit, page });
   res.status(200).json(users);
 };
 

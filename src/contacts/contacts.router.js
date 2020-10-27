@@ -19,6 +19,7 @@ const router = Router();
 
 router.route("/api/contacts");
 
+// router.get("/", errorHandlingWrapper(getAllContacts));
 router.get("/", errorHandlingWrapper(getAllContacts));
 
 router.post(
@@ -41,5 +42,7 @@ router.delete(
 
   errorHandlingWrapper(deleteContactById)
 );
+
+// router.get("/contacts");
 
 exports.contactsRouter = router;
