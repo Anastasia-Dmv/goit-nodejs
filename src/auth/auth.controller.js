@@ -12,7 +12,7 @@ exports.signUp = async (req, res, next) => {
     const existingUser = await UserModel.findOne({ email: req.body.email });
     if (existingUser) {
       //return res.status(409).json("Сontact with the same email already exists");
-      throw new Conflict("User with such email already exists");
+      throw new Conflict();
     }
     const passwordHash = await bcryptjs.hash(
       password,
@@ -23,8 +23,10 @@ exports.signUp = async (req, res, next) => {
       password: passwordHash,
     });
     res.status(201).send({
-      id: newUser._id,
-      email: newUser.email,
+      user: {
+        email: newUser.email,
+        subscription: newUser.subscription,
+      },
     });
   } catch (err) {
     next(err);
@@ -47,9 +49,11 @@ exports.signIn = async (req, res, next) => {
     });
     res.cookie("token", token, { httpOnly: true });
     res.status(200).send({
-      //   id: user._id,
-      email,
       token,
+      user: {
+        email: user.email,
+        subscription: user.subscription,
+      },
     });
   } catch (err) {
     console.log("err", err);

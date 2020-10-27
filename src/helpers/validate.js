@@ -28,12 +28,12 @@ const createContactSchema = Joi.object({
 const signUpSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
-  // subscription: {
-  //   type: Joi.string().required(),
-  //   enum: ["free", "pro", "premium"],
-  //   default: "free",
-  // },
-  //token: Joi.string().required(),
+  subscription: {
+    type: Joi.string(),
+    enum: ["free", "pro", "premium"],
+    default: "free",
+  },
+  token: Joi.string(),
 });
 const singInSchema = Joi.object({
   email: Joi.string().email().required(),
