@@ -62,28 +62,15 @@ exports.logOut = async (req, res, next) => {
     if (!req.cookies.token) {
       throw new Unauthorized();
     }
-    //const { token } = req.cookies;
-    //console.log("token", token);
-    //const newToken = req.headers.authorization.split(" ")[1];
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
     const user = await UserModel.findById(payload.userId);
     if (!user) {
-      throw new Unauthorized();
+      throw new NotFound();
     }
-
     req.user = user;
-
-    console.log("logout------------>IAM HERE");
     res.cookie("token", "", { httpOnly: true });
-    // req.session.destroy(() => {
-    //   res.redirect("/");
-    // });
-
-    //console.log("user----------->", user);
-    res.status(215).send("token has been just deleted");
-    next();
+    return res.status(200).json();
   } catch (err) {
-    console.log("err===========>", err);
-    next(new Unauthorized("Token is not valid"));
+    next(err);
   }
 };
