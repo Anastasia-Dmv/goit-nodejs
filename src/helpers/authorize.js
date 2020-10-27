@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 //const jwt = require("jsonwebtoken");
 const { UserModel } = require("../users/users.model");
 const { Unauthorized } = require("./errors/Unauthorized.error");
-
+const passport = require("passport");
 exports.authorize = async (req, res, next) => {
   try {
     console.log("req.headers", req.headers);
