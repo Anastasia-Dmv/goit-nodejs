@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "nodemon": "^2.0.4",
+    "uuidv4": "^6.2.4",
     "yargs": "^16.0.3"
   },
   "devDependencies": {},

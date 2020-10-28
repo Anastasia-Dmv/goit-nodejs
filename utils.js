@@ -10,7 +10,8 @@ async function errorHandlingWrapper(innerFn) {
     const list = JSON.parse(resultData);
     return innerFn(list);
   } catch (err) {
-    console.log("err", err);
+    console.log("err", err.message);
+    process.exit(1);
   }
 }
 
