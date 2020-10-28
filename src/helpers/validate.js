@@ -39,10 +39,14 @@ const singInSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
 });
+const subscriptionSchema = Joi.object({
+  subscription: Joi.string().required(),
+});
 module.exports = {
   updateContactSchema,
   createContactSchema,
   validate,
   signUpSchema,
   singInSchema,
+  subscriptionSchema,
 };

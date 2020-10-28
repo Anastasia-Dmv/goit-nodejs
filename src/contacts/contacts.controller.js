@@ -37,7 +37,6 @@ updateContact = async (req, res, next) => {
   const contact = await ContactsModel.findByIdAndUpdate(contactId, req.body, {
     new: true,
   });
-
   if (!contact) {
     return res.status(404).json("Not found");
   }
@@ -50,7 +49,6 @@ deleteContactById = async (req, res, next) => {
   if (!deleteResult.deletedCount) {
     return res.status(410).json("Not found");
   }
-
   return res.status(204).json("Contact deleted");
 };
 module.exports = {

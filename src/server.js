@@ -1,16 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const cors = require("cors");
 const morgan = require("morgan");
-//const cookieParser = require("cookie-parser");
 const cookieParser = require("cookie-parser");
-require("dotenv").config({ path: path.join(__dirname, "../.env") });
-
 const { contactsRouter } = require("./contacts/contacts.router");
 const { authRouter } = require("./auth/auth.router");
 const { usersRouter } = require("./users/users.router");
+const cors = require("cors");
 
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const PORT = process.env.PORT || 3000;
 
 class CrudServer {
@@ -42,7 +40,7 @@ class CrudServer {
       });
       console.log("Successfully connected to mongo database !");
     } catch (err) {
-      console.log("Error connecting mongo database", err);
+      console.log("Error connecting mongo database");
       process.exit(1);
     }
   }

@@ -1,5 +1,4 @@
 const { Router } = require("express");
-//const { authorize } = require("../helpers/authorize");
 const { errorHandlingWrapper } = require("../helpers/utils");
 
 const {
@@ -18,31 +17,18 @@ const {
 const router = Router();
 
 router.route("/api/contacts");
-
-// router.get("/", errorHandlingWrapper(getAllContacts));
 router.get("/", errorHandlingWrapper(getAllContacts));
-
 router.post(
   "/",
   validate(createContactSchema),
   errorHandlingWrapper(createContact)
 );
-
 router.get("/:contactId", errorHandlingWrapper(findContactById));
-
 router.put(
   "/:contactId",
-
   validate(updateContactSchema),
   errorHandlingWrapper(updateContact)
 );
-
-router.delete(
-  "/:contactId",
-
-  errorHandlingWrapper(deleteContactById)
-);
-
-// router.get("/contacts");
+router.delete("/:contactId", errorHandlingWrapper(deleteContactById));
 
 exports.contactsRouter = router;
