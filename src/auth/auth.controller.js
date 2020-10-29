@@ -11,7 +11,6 @@ exports.signUp = async (req, res, next) => {
     const { password } = req.body;
     const existingUser = await UserModel.findOne({ email: req.body.email });
     if (existingUser) throw new Conflict();
-
     const passwordHash = await bcryptjs.hash(
       password,
       parseInt(process.env.SALT_ROUNDS)
@@ -33,7 +32,7 @@ exports.signUp = async (req, res, next) => {
 exports.signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email: email });
     if (!user) throw new NotFound();
 
     const isCorrectPassword = await bcryptjs.compare(password, user.password);
@@ -51,7 +50,7 @@ exports.signIn = async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 };
 

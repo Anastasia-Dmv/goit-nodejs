@@ -4,9 +4,10 @@ function errorHandlingWrapper(innerFn) {
       await innerFn(req, res);
     } catch (err) {
       if (err.message && err.name === "CastError") {
-        return res.status(404).json("Not found, please enter correct ID");
+        return res
+          .status(404)
+          .json({ message: "Not found, please enter correct ID" });
       }
-
       next(err.message);
     }
   };

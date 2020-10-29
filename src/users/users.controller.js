@@ -14,8 +14,7 @@ exports.updateCurrentUser = async (req, res, next) => {
     { new: true }
   );
 
-  if (!user) {
-    return res.status(404).json("Not found");
-  }
+  if (!user) return res.status(404).json({ message: "Not found" });
+
   return res.status(200).json(user);
 };
