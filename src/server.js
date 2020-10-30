@@ -7,6 +7,7 @@ const { contactsRouter } = require("./contacts/contacts.router");
 const { authRouter } = require("./auth/auth.router");
 const { usersRouter } = require("./users/users.router");
 const cors = require("cors");
+//const { multerRouter } = require("./multer");
 
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const PORT = process.env.PORT || 3000;
@@ -47,11 +48,13 @@ class CrudServer {
   async initMiddlewares() {
     this.app.use(express.json());
     this.app.use(cookieParser());
+    this.app.use(express.static("public"));
   }
   initRouters() {
     this.app.use("/auth", authRouter);
     this.app.use("/users", usersRouter);
     this.app.use("/api/contacts", contactsRouter);
+    // this.app.use("/", multerRouter);
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
