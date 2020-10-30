@@ -5,19 +5,9 @@ const { Conflict } = require("../helpers/errors/Conflict.error");
 const { NotFound } = require("../helpers/errors/NotFound.error");
 const { Forbidden } = require("../helpers/errors/Forbidden.error");
 const { Unauthorized } = require("../helpers/errors/Unauthorized.error");
-const AvatarGenerator = require("avatar-generator");
-const path = require("path");
 
-const avatar = new AvatarGenerator({
-  parts: ["background", "face", "clothes", "head", "hair", "eye", "mouth"], //order in which sprites should be combined
-  // partsLocation: path.join(__dirname, "../img"), // path to sprites
-  imageExtension: ".png", // sprite file extension
-});
-const variant = "female"; // By default 'male' and 'female' supported
 exports.signUp = async (req, res, next) => {
   try {
-    // const image = await avatar.generate(req.body.email, variant);
-
     const { password } = req.body;
     const existingUser = await UserModel.findOne({ email: req.body.email });
     if (existingUser) throw new Conflict();
@@ -25,17 +15,18 @@ exports.signUp = async (req, res, next) => {
       password,
       parseInt(process.env.SALT_ROUNDS)
     );
+
     const newUser = await UserModel.create({
       email: req.body.email,
       password: passwordHash,
-      //avatarURL: await avatar.generate(req.body.email, variant),
+      //avatarURL: `https://icotar.com/avatar/${req.body.email}`,
     });
-    console.log("newUser", newUser);
+
     res.status(201).send({
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
-        //  avatarURL: `${newUser.avatarURL}`,
+        //avatarURL: newUser.avatarURL,
       },
     });
   } catch (err) {

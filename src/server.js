@@ -11,11 +11,11 @@ const imagemin = require("imagemin");
 const imageminJpegtran = require("imagemin-jpegtran");
 const imageminPngquant = require("imagemin-pngquant");
 const { promises: fsPropmises } = require("fs");
-//const { multerRouter } = require("./multer");
+const { multerRouter } = require("./multer");
+const multer = require("multer");
 
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const PORT = process.env.PORT || 3000;
-const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "tmp"),
@@ -93,7 +93,7 @@ class CrudServer {
     this.app.post(
       "/images",
       upload.single("avatar"),
-      compressImages,
+      //compressImages,
       (req, res, next) => {
         console.log("req.file", req.file);
         console.log("req.body", req.body);
