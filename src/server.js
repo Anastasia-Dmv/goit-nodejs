@@ -11,7 +11,8 @@ const cors = require("cors");
 
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const PORT = process.env.PORT || 3000;
-
+const multer = require("multer");
+const upload = multer({ dest: "public" });
 class CrudServer {
   constructor() {
     this.app = null;
@@ -54,7 +55,13 @@ class CrudServer {
     this.app.use("/auth", authRouter);
     this.app.use("/users", usersRouter);
     this.app.use("/api/contacts", contactsRouter);
+    this.app.post("/images", upload.single("avatar"), (req, res, next) => {
+      console.log("req.file", req.file);
+      console.log("req.body", req.body);
+      res.status(200).send();
+    });
     // this.app.use("/", multerRouter);
+    //this.app.use(express.static("public"));
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
