@@ -23,6 +23,8 @@
     "multer": "^1.4.2",
     "nodemon": "^2.0.5",
     "passport": "^0.4.1",
+    "random-avatar-generator": "^2.0.0",
+    "seedable-random-avatar-generator": "^1.1.2",
     "uuidv4": "^6.2.4",
     "yargs": "^16.0.3"
   },

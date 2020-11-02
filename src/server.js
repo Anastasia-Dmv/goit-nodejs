@@ -17,36 +17,6 @@ const multer = require("multer");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const PORT = process.env.PORT || 3000;
 
-const storage = multer.diskStorage({
-  destination: path.join(__dirname, "tmp"),
-  filename: (req, file, cb) => {
-    const { originalname } = file;
-    const { ext } = path.parse(originalname);
-    return cb(null, Date.now() + ext);
-  },
-});
-const upload = multer({ storage });
-// upload.array("gallery", 5);
-// upload.fields([
-//   { name: "avatar", maxCount: 1 },
-//   { name: "gallery", maxCount: 5 },
-// ]);
-
-async function compressImages(req, res, next) {
-  const COMPRESSED_IMAGES_DIR = normalizeImageminPath(
-    path.join(__dirname, "public")
-  );
-  const normilizedPath = normalizeImageminPath(req.file.path);
-  await imagemin([normilizedPath], {
-    destination: COMPRESSED_IMAGES_DIR,
-    plugins: [imageminJpegtran(), imageminPngquant({ qaulity: [0.6, 0.8] })],
-  });
-  await fsPropmises.unlink(req.file.path);
-
-  req.file.destination = COMPRESSED_IMAGES_DIR;
-  req.file.path = path.join(COMPRESSED_IMAGES_DIR, req.file.filename);
-  next();
-}
 //==========
 class CrudServer {
   constructor() {
@@ -90,19 +60,6 @@ class CrudServer {
     this.app.use("/auth", authRouter);
     this.app.use("/users", usersRouter);
     this.app.use("/api/contacts", contactsRouter);
-    this.app.post(
-      "/images",
-      upload.single("avatar"),
-      //compressImages,
-      (req, res, next) => {
-        console.log("req.file", req.file);
-        console.log("req.body", req.body);
-        console.log(" req.files", req.files);
-        res.status(200).send("hello");
-      }
-    );
-    // this.app.use("/", multerRouter);
-    //this.app.use(express.static("public"));
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {
@@ -115,9 +72,6 @@ class CrudServer {
       console.log("server started on port ", PORT);
     });
   }
-}
-function normalizeImageminPath(path) {
-  return path.replace(/\\/g, "/");
 }
 
 exports.CrudServer = CrudServer;

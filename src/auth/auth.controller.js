@@ -5,6 +5,8 @@ const { Conflict } = require("../helpers/errors/Conflict.error");
 const { NotFound } = require("../helpers/errors/NotFound.error");
 const { Forbidden } = require("../helpers/errors/Forbidden.error");
 const { Unauthorized } = require("../helpers/errors/Unauthorized.error");
+const { AvatarGenerator } = require("random-avatar-generator");
+const generator = new AvatarGenerator();
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -19,14 +21,15 @@ exports.signUp = async (req, res, next) => {
     const newUser = await UserModel.create({
       email: req.body.email,
       password: passwordHash,
-      //avatarURL: `https://icotar.com/avatar/${req.body.email}`,
+      avatarURL: generator.generateRandomAvatar(`${req.body.email}`), //1st option
+      //avatarURL: `https://icotar.com/avatar/${req.body.email}`,     //2nd option ...how to generate avatar
     });
 
     res.status(201).send({
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
-        //avatarURL: newUser.avatarURL,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (err) {

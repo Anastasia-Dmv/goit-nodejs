@@ -42,6 +42,9 @@ const singInSchema = Joi.object({
 const subscriptionSchema = Joi.object({
   subscription: Joi.string().required(),
 });
+// const updateAvatarSchema = Joi.object({
+//   avatarURL: Joi.string().required(),
+// });???
 module.exports = {
   updateContactSchema,
   createContactSchema,
@@ -49,4 +52,5 @@ module.exports = {
   signUpSchema,
   singInSchema,
   subscriptionSchema,
+  //updateAvatarSchema,
 };
