@@ -3,7 +3,6 @@ const bcryptjs = require("bcryptjs");
 const { UserModel } = require("../users/users.model");
 const { Conflict } = require("../helpers/errors/Conflict.error");
 const { NotFound } = require("../helpers/errors/NotFound.error");
-const { Forbidden } = require("../helpers/errors/Forbidden.error");
 const { Unauthorized } = require("../helpers/errors/Unauthorized.error");
 const { AvatarGenerator } = require("random-avatar-generator");
 const generator = new AvatarGenerator();
@@ -43,7 +42,7 @@ exports.signIn = async (req, res, next) => {
     if (!user) throw new Unauthorized();
 
     const isCorrectPassword = await bcryptjs.compare(password, user.password);
-    if (!isCorrectPassword) throw new Forbidden();
+    if (!isCorrectPassword) throw new Unauthorized();
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -68,9 +67,11 @@ exports.logOut = async (req, res, next) => {
     const payload = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
     const user = await UserModel.findById(payload.userId);
     if (!user) throw new NotFound();
-
     req.user = user;
-    res.cookie("token", "", { httpOnly: true });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: -1,
+    });
+    res.cookie("token", token, { httpOnly: true });
     return res.status(200).json();
   } catch (err) {
     next(err);

@@ -3,16 +3,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const { contactsRouter } = require("./contacts/contacts.router");
-const { authRouter } = require("./auth/auth.router");
-const { usersRouter } = require("./users/users.router");
 const cors = require("cors");
-const imagemin = require("imagemin");
-const imageminJpegtran = require("imagemin-jpegtran");
-const imageminPngquant = require("imagemin-pngquant");
-const { promises: fsPropmises } = require("fs");
-const { multerRouter } = require("./multer");
-const multer = require("multer");
+const routes = require("./routes");
 
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const PORT = process.env.PORT || 3000;
@@ -57,9 +49,13 @@ class CrudServer {
     this.app.use(express.static("public"));
   }
   initRouters() {
-    this.app.use("/auth", authRouter);
-    this.app.use("/users", usersRouter);
-    this.app.use("/api/contacts", contactsRouter);
+    this.app.use("/api/v1", routes);
+    this.app.use((req, res) =>
+      res.status(404).json({
+        message: "Not found",
+        description: "The requested page does not exist",
+      })
+    );
   }
   initErrorHandling() {
     this.app.use((err, req, res, next) => {

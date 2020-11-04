@@ -79,6 +79,54 @@ describe("Authorize unit tests suite", () => {
       sinon.assert.notCalled(next);
     });
   });
+
+  //=========
+  context("when user not found", () => {
+    let sandbox, res, next, findByIdStub;
+    const userId = "user_id";
+    const user = { id: "user_id_from_db" };
+
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+    const req = { headers: { authorization: `Bearer ${token}` } };
+
+    before(async () => {
+      sandbox = sinon.createSandbox();
+      res = { status: sandbox.stub(), send: sandbox.stub() };
+      res.status.returns(res);
+      next = sandbox.stub();
+      findByIdStub = sandbox.stub(UserModel, "findById");
+      //throwErrorStub = sandbox.stub(Unauthorized);
+      await authorize(req, res, next);
+    });
+    after(() => {
+      sandbox.restore();
+    });
+    it("should not call res.status", () => {
+      sinon.assert.notCalled(res.status);
+    });
+
+    it("should not call res.send", () => {
+      sinon.assert.notCalled(res.send);
+    });
+
+    it("should call findById once", () => {
+      sinon.assert.calledOnce(UserModel.findById);
+      sinon.assert.calledWithExactly(UserModel.findById, userId);
+    });
+
+    it("should  not pass user to req object", () => {
+      chai.assert.notEqual(req.user, user);
+    });
+
+    it("should call next once", () => {
+      sinon.assert.calledOnce(next);
+      sinon.assert.calledWithExactly(
+        next,
+        sinon.match.instanceOf(Unauthorized)
+      );
+    });
+  });
+  //=========
   context("when everything is ok", () => {
     let sandbox, res, next, findByIdStub;
     const userId = "user_id";
