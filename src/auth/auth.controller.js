@@ -40,7 +40,7 @@ exports.signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email: email });
-    if (!user) throw new NotFound();
+    if (!user) throw new Unauthorized();
 
     const isCorrectPassword = await bcryptjs.compare(password, user.password);
     if (!isCorrectPassword) throw new Forbidden();
