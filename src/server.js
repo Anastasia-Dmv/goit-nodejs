@@ -29,7 +29,7 @@ class CrudServer {
     this.initMiddlewares();
     this.initRouters();
     this.initErrorHandling();
-    this.startListening();
+    return this.startListening();
   }
   initServer() {
     this.app = express();
@@ -68,7 +68,7 @@ class CrudServer {
     });
   }
   startListening() {
-    this.app.listen(PORT, () => {
+    return this.app.listen(PORT, () => {
       console.log("server started on port ", PORT);
     });
   }

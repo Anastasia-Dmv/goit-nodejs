@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "mocha": "^8.2.1",
-    "sinon": "^9.2.1"
+    "sinon": "^9.2.1",
+    "supertest": "^6.0.0"
   },
   "scripts": {
     "test": "mocha ./testing/auth.test.js --exit--timeout 5000",
