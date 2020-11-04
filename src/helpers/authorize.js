@@ -7,7 +7,7 @@ require("dotenv").config({ path: path.join(__dirname, " ../../../.env  ") });
 exports.authorize = async (req, res, next) => {
   let token;
   if (req.headers.authorization) {
-    const authHeader = req.headers.authorization || "";
+    const authHeader = req.headers.authorization;
     token = authHeader.replace("Bearer ", "");
   } else {
     token = req.cookies.token;

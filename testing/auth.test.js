@@ -12,9 +12,12 @@ const { Unauthorized } = require("../src/helpers/errors/Unauthorized.error");
 describe("Authorize unit tests suite", () => {
   context("when no auth header provided", () => {
     let sandbox;
-    let findByIdStub;
     let res, next;
-    const req = { headers: {} };
+
+    const req = {
+      headers: {},
+      cookies: {},
+    };
 
     before(async () => {
       sandbox = sinon.createSandbox();
@@ -44,7 +47,7 @@ describe("Authorize unit tests suite", () => {
   });
 
   context("when jwt token is invalid", () => {
-    const req = { headers: { authorization: "" } };
+    const req = { headers: { authorization: "invalid_token" } };
 
     let res, sandbox, next;
 
@@ -80,7 +83,8 @@ describe("Authorize unit tests suite", () => {
     let sandbox, res, next, findByIdStub;
     const userId = "user_id";
     const user = { id: "user_id_from_db" };
-    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET);
+
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET);
     const req = { headers: { authorization: `Bearer ${token}` } };
 
     before(async () => {
