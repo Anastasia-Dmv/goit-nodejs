@@ -1,3 +1,4 @@
+const { uuid } = require("uuidv4");
 const { UserModel } = require("./users.model");
 
 exports.getCurrentUser = (req, res, next) => {
@@ -29,3 +30,10 @@ exports.updateCurrentUserAvatar = async (req, res, next) => {
 
   return res.status(200).json(user);
 };
+// exports.createVerificationToken = async (req, res, next) => {
+//   const user = await UserModel.findByIdAndUpdate(
+//     req.user.id,
+//     { verificationToken: uuid.v5() },
+//     { new: true }
+//   );
+// };

@@ -1,11 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const routes = require("./routes");
 
+const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const PORT = process.env.PORT || 3000;
 
