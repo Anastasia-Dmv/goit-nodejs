@@ -1,16 +1,15 @@
 const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
-const { UserModel } = require("../users/users.model");
-const { Conflict } = require("../helpers/errors/Conflict.error");
-const { NotFound } = require("../helpers/errors/NotFound.error");
-const { Unauthorized } = require("../helpers/errors/Unauthorized.error");
-const { AvatarGenerator } = require("random-avatar-generator");
-const generator = new AvatarGenerator();
 const { uuid } = require("uuidv4");
 const sgMail = require("@sendgrid/mail");
 const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "../.env") });
+const { UserModel } = require("../users/users.model");
+const { NotFound } = require("../helpers/errors/NotFound.error");
+const { Unauthorized } = require("../helpers/errors/Unauthorized.error");
+const { AvatarGenerator } = require("random-avatar-generator");
 
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
+const generator = new AvatarGenerator();
 exports.signUp = async (req, res, next) => {
   try {
     const { password, email } = req.body;
@@ -24,8 +23,7 @@ exports.signUp = async (req, res, next) => {
     const newUser = await UserModel.create({
       email,
       password: passwordHash,
-      avatarURL: generator.generateRandomAvatar(`${req.body.email}`), //1st option
-      //avatarURL: `https://icotar.com/avatar/${req.body.email}`,     //2nd option ...how to generate avatar
+      avatarURL: generator.generateRandomAvatar(`${req.body.email}`),
       verificationToken: uuid(),
     });
     await sendVerificationEmail(email, newUser.verificationToken);
@@ -84,13 +82,7 @@ exports.logOut = async (req, res, next) => {
     next(err);
   }
 };
-//==============
 
-//=================
-// using Twilio SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
-
-//=========
 exports.verifyEmail = async (req, res, next) => {
   try {
     const { verificationToken } = req.params;
@@ -100,12 +92,6 @@ exports.verifyEmail = async (req, res, next) => {
     );
     if (!user) throw new NotFound();
     res.status(200).json("User successfully verified");
-
-    // await UserModel.updateOne({ verificationToken }, { isVerified: true });
-    // await UserModel.updateOne(
-    //   // { verificationToken },
-    //   { verificationToken: null }
-    // );
     return;
   } catch (err) {
     next(err);
@@ -113,18 +99,12 @@ exports.verifyEmail = async (req, res, next) => {
 };
 
 async function sendVerificationEmail(email, verificationToken) {
-  // const verificationToken = uuid.v5();
-  // const user = await UserModel.findByIdAndUpdate(
-  //   req.user.id,
-  //   { verificationToken: verificationToken },
-  //   { new: true }
-  // );
   const verificationLink = `http://localhost:3000/api/v1/auth/verify/${verificationToken}'`;
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
-    to: email, // Change to your recipient
-    from: "vesta50000@gmail.com", // Change to your verified sender
+    to: email,
+    from: "vesta50000@gmail.com",
     subject: "Email verification",
     text: "and easy to do anywhere, even with Node.js",
     html: `<a href='${verificationLink}'>Click here</a>`,
